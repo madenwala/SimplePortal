@@ -1,0 +1,14 @@
+﻿<h1>Add Course</h1>
+
+<p>Count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="btnAdd_Click">Add</button>
+
+@code {
+    private int currentCount = 0;
+
+    private void btnAdd_Click()
+    {
+        currentCount++;
+    }
+}
