@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -7,14 +8,47 @@ namespace SimplePortal.UI.Web.Data
 {
     public sealed class ClassroomService
     {
-        public Task<ClassroomResponse> GetClassroomAsync()
+        private ClassroomResponse response = new ClassroomResponse();
+        
+        public ClassroomService()
         {
-            return Task.FromResult<ClassroomResponse>(null);
+            response.Semesters = new List<Semester>();
+            response.Semesters.Add(new Semester() { Year = DateTime.Now.Year, Period = "H1" });
+            response.Semesters.Add(new Semester() { Year = DateTime.Now.Year, Period = "H2" });
+
+            response.Departments = new List<Department>();
+            response.Departments.Add(new Department("AI", "Artifical Intellience"));
+            response.Departments.Add(new Department("AR", "Architecture"));
+            response.Departments.Add(new Department("CS", "Computer Science", "Windows", "Linux"));
+            response.Departments.Add(new Department("MS", "Management Systems"));
+
+            response.Classes = new List<string>();
         }
 
-        public Task<AddClassroomResponse> GetAddClassroomAsync(AddClassroomRequest request)
+        public Task<ClassroomResponse> GetClassroomAsync()
         {
-            return Task.FromResult<AddClassroomResponse>(null);
+            response.Status = StatusCodes.OK;
+            response.ErrorMessage = null;
+            return Task.FromResult<ClassroomResponse>(response);
+        }
+
+        public Task<ClassroomResponse> GetAddClassroomAsync(AddClassroomRequest request)
+        {
+            string msg = $"{request?.Semester.Year}{request?.Semester.Period} {request.Department.ShortName}{request.ClassCode} {request.ClassName} {request.Department?.CourseTypes}";
+            msg = msg.Trim();
+            if (response.Classes.Contains(msg))
+            {
+                response.Status = StatusCodes.Error;
+                response.ErrorMessage = "The class already exist!";
+            }
+            else
+            {
+                response.Status = StatusCodes.OK;
+                response.ErrorMessage = null;
+                response.Classes.Add(msg);
+            }
+
+            return Task.FromResult<ClassroomResponse>(response);
         }
     }
 
