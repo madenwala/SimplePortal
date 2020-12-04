@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Blazor.Data;
+using SimplePortal.UI.Web.Data;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
@@ -46,7 +46,7 @@ namespace Blazor
             services.AddRazorPages();
             services.AddServerSideBlazor()
                 .AddMicrosoftIdentityConsentHandler();
-            services.AddSingleton<WeatherForecastService>();
+            services.AddSingleton<ClassroomService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
