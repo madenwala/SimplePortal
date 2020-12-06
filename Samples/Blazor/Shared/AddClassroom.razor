@@ -1,14 +1,80 @@
-﻿<h3>Add Classroom</h3>
+﻿@using SimplePortal.UI.Web.Data
+@inject ClassroomService Service
 
-<p>Count: @currentCount</p>
+<h3>Add Classroom</h3>
 
-<button class="btn btn-primary" @onclick="btnAdd_Click">Add</button>
+
+@if (response == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    if (response.Status != StatusCodes.OK)
+    {
+        <p class="text-danger"><strong>@response.ErrorMessage</strong></p>
+    }
+
+    <p>
+        <label for="semester">Semester</label>
+        <input type="text" id="semester" name="semester" value="Semester" />
+    </p>
+    <p>
+        <label for="department">Department</label>
+        <input type="text" id="department" name="department" value="CS" />
+    </p>
+    <p>
+        <label for="coursetype">Course Type</label>
+        <input type="text" id="coursetype" name="coursetype" value="Windows/Linux" />
+    </p>
+    <p>
+        <label for="classcode">Class Code</label>
+        <input type="number" id="classcode" name="classcode" @bind="this.Classroom.ClassCode" />
+    </p>
+    <p>
+        <label for="classname">Class Name</label>
+        <input type="text" id="classname" name="classname" @bind="this.Classroom.ClassName" />
+    </p>
+    <p>
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" @bind="this.Classroom.Username" />
+    </p>
+    <p>
+        <label for="pwd">Password</label>
+        <input type="password" id="pwd" name="pwd" @bind="this.Classroom.Password" />
+    </p>
+
+    <button class="btn btn-primary" @onclick="btnAdd_Click">Add</button>
+
+    if (response.Classes?.Count > 0)
+    {
+        <h3>Classes</h3>
+
+        @foreach (var cls in response.Classes)
+        {
+            <p>@cls</p>
+        }
+    }
+}
+
 
 @code {
-    private int currentCount = 0;
+    private ClassroomResponse response;
 
-    private void btnAdd_Click()
+    [Parameter]
+    public AddClassroomRequest Classroom { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        currentCount++;
+        this.Classroom = new AddClassroomRequest();
+        response = await Service.GetClassroomAsync();
+    }
+
+    private async void btnAdd_Click()
+    {
+        response = null;
+        response = await Service.AddClassroomAsync(this.Classroom);
+        if (response.Status == StatusCodes.OK)
+            this.Classroom = new AddClassroomRequest();
     }
 }

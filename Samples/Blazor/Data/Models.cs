@@ -2,6 +2,12 @@
 
 namespace SimplePortal.UI.Web.Data
 {
+    public abstract class BaseResponse
+    {
+        public StatusCodes Status { get; set; }
+        public string ErrorMessage { get; set; }
+    }
+
     public sealed class ClassroomResponse : BaseResponse
     {
         public List<Semester> Semesters { get; set; }
@@ -13,6 +19,8 @@ namespace SimplePortal.UI.Web.Data
     {
         public int Year { get; set; }
         public string Period { get; set; }
+
+        public string DisplayName { get { return $"{this.Year} {this.Period}"; } }
     }
 
     public sealed class Department
@@ -32,6 +40,8 @@ namespace SimplePortal.UI.Web.Data
         public string ShortName { get; set; }
         public string Name { get; set; }
         public List<CourseType> CourseTypes { get; set; }
+
+        public string DisplayName { get { return $"{this.ShortName} {this.Name}"; } }
     }
 
     public sealed class CourseType
@@ -47,12 +57,14 @@ namespace SimplePortal.UI.Web.Data
         public string ClassName { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-    }
 
-    public abstract class BaseResponse
-    {
-        public StatusCodes Status { get; set; }
-        public string ErrorMessage { get; set; }
+        public string DisplayName
+        {
+            get
+            {
+                return $"{this.Semester?.Year}{this.Semester?.Period} {this.Department?.ShortName}{this.ClassCode} {this.ClassName} {this.Department?.CourseTypes}".Trim();
+            }
+        }
     }
 
     public enum StatusCodes

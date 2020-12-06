@@ -32,20 +32,26 @@ namespace SimplePortal.UI.Web.Data
             return Task.FromResult<ClassroomResponse>(response);
         }
 
-        public Task<ClassroomResponse> GetAddClassroomAsync(AddClassroomRequest request)
+        public Task<ClassroomResponse> AddClassroomAsync(AddClassroomRequest request)
         {
-            string msg = $"{request?.Semester.Year}{request?.Semester.Period} {request.Department.ShortName}{request.ClassCode} {request.ClassName} {request.Department?.CourseTypes}";
-            msg = msg.Trim();
-            if (response.Classes.Contains(msg))
+            try
+            {
+                if (string.IsNullOrEmpty(request.DisplayName) || response.Classes.Contains(request.DisplayName))
+                {
+                    response.Status = StatusCodes.Error;
+                    response.ErrorMessage = "The class already exist!";
+                }
+                else
+                {
+                    response.Status = StatusCodes.OK;
+                    response.ErrorMessage = null;
+                    response.Classes.Add(request.DisplayName);
+                }
+            }
+            catch (Exception ex)
             {
                 response.Status = StatusCodes.Error;
-                response.ErrorMessage = "The class already exist!";
-            }
-            else
-            {
-                response.Status = StatusCodes.OK;
-                response.ErrorMessage = null;
-                response.Classes.Add(msg);
+                response.ErrorMessage = ex.Message;
             }
 
             return Task.FromResult<ClassroomResponse>(response);
