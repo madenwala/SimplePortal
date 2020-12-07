@@ -45,6 +45,7 @@ namespace SimplePortal.UI.Web.Data
         public string CourseType { get; set; }
         public int ClassCode { get; set; } = 100;
         public string ClassName { get; set; }
+        public bool DefaultCredentials { get; set; } = true;
         public string Username { get; set; }
         public string Password { get; set; }
 

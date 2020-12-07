@@ -58,13 +58,20 @@ else
         <input type="text" id="classname" name="classname" @bind="request.ClassName" />
     </p>
     <p>
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" @bind="request.Username" />
+        <input type="checkbox" @bind="request.DefaultCredentials" id="defaultCredentials" name="defaultCredentials" />
+        <label for="defaultCredentials">Use default credentials</label>
     </p>
-    <p>
-        <label for="pwd">Password</label>
-        <input type="password" id="pwd" name="pwd" @bind="request.Password" />
-    </p>
+    @if (request.DefaultCredentials == false)
+    {
+        <p>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" @bind="request.Username" />
+        </p>
+        <p>
+            <label for="pwd">Password</label>
+            <input type="password" id="pwd" name="pwd" @bind="request.Password" />
+        </p>
+    }
 
     <p><button class="btn btn-primary" @onclick="btnAdd_Click">Add</button></p>
 
