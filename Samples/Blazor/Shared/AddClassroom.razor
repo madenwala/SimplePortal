@@ -22,6 +22,7 @@ else
     <p>
         <label for="semester">Semester</label>
         <select id="semester" name="semester" @bind="request.Semester">
+            <option />
             @foreach (var sem in response.Semesters)
             {
                 <option value="@sem.DisplayName">@sem.DisplayName</option>
@@ -31,21 +32,23 @@ else
     <p>
         <label for="department">Department</label>
         <select id="department" name="department" @bind="request.Department">
+            <option />
             @foreach (var dep in response.Departments)
             {
                 <option value="@dep.ShortName">@dep.DisplayName</option>
             }
         </select>
     </p>
-    @*<p>
+    <p>
         <label for="coursetype">Course Type</label>
         <select id="coursetype" name="coursetype" @bind="request.CourseType">
-            @foreach (var ct in request.Department.co)
+            <option />
+            @foreach (var ct in response.CourseTypes)
             {
-                <option value="ct">@ct.Name</option>
+                <option value="@ct.Name">@ct.Name</option>
             }
         </select>
-    </p>*@
+    </p>
     <p>
         <label for="classcode">Class Code</label>
         <input type="number" id="classcode" name="classcode" @bind="request.ClassCode" min="100" max="999" />

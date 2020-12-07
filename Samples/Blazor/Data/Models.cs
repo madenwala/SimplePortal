@@ -12,6 +12,7 @@ namespace SimplePortal.UI.Web.Data
     {
         public List<Semester> Semesters { get; set; }
         public List<Department> Departments { get; set; }
+        public List<CourseType> CourseTypes { get; set; }
         public List<string> Classes { get; set; }
     }
 
@@ -25,27 +26,15 @@ namespace SimplePortal.UI.Web.Data
 
     public sealed class Department
     {
-        public Department(string shortName, string name, params string[] courseNames)
-        {
-            this.ShortName = shortName;
-            this.Name = name;
-            if (courseNames != null)
-            {
-                this.CourseTypes = new List<CourseType>();
-                foreach (string courseName in courseNames)
-                    this.CourseTypes.Add(new CourseType() { Name = courseName });
-            }
-        }
-
         public string ShortName { get; set; }
         public string Name { get; set; }
-        public List<CourseType> CourseTypes { get; set; }
 
         public string DisplayName { get { return $"{this.ShortName} - {this.Name}".Trim(); } }
     }
 
     public sealed class CourseType
     {
+        public string ShortName { get; set; }
         public string Name { get; set; }
     }
 
@@ -63,7 +52,7 @@ namespace SimplePortal.UI.Web.Data
         {
             get
             {
-                return $"{this.Semester} {this.Department}{this.ClassCode} {this.ClassName} {this.CourseType}".Replace("  ", "").Trim();
+                return $"{this.Semester} {this.Department}{this.ClassCode} {this.ClassName} ({this.CourseType})".Replace("()", "").Replace("  ", "").Trim();
             }
         }
 

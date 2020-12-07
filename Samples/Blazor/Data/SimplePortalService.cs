@@ -15,10 +15,14 @@ namespace SimplePortal.UI.Web.Data
             response.Semesters.Add(new Semester() { Year = DateTime.Now.Year, Period = "H2" });
 
             response.Departments = new List<Department>();
-            response.Departments.Add(new Department("AI", "Artifical Intellience"));
-            response.Departments.Add(new Department("AR", "Architecture"));
-            response.Departments.Add(new Department("CS", "Computer Science", "Windows", "Linux"));
-            response.Departments.Add(new Department("MS", "Management Systems"));
+            response.Departments.Add(new Department() { ShortName = "AI", Name = "Artifical Intellience" });
+            response.Departments.Add(new Department() { ShortName = "AR", Name = "Architecture" });
+            response.Departments.Add(new Department() { ShortName = "CS", Name = "Computer Science" });
+            response.Departments.Add(new Department() { ShortName = "MS", Name = "Management Systems" });
+
+            response.CourseTypes = new List<CourseType>();
+            response.CourseTypes.Add(new CourseType() { ShortName = "CS", Name = "Windows" });
+            response.CourseTypes.Add(new CourseType() { ShortName = "CS", Name = "Linux" });
 
             response.Classes = new List<string>();
         }
