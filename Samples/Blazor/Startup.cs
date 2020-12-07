@@ -46,7 +46,7 @@ namespace Blazor
             services.AddRazorPages();
             services.AddServerSideBlazor()
                 .AddMicrosoftIdentityConsentHandler();
-            services.AddSingleton<ClassroomService>();
+            services.AddSingleton<SimplePortalService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -20,7 +20,7 @@ namespace SimplePortal.UI.Web.Data
         public int Year { get; set; }
         public string Period { get; set; }
 
-        public string DisplayName { get { return $"{this.Year} {this.Period}"; } }
+        public string DisplayName { get { return $"{this.Year} {this.Period}".Trim(); } }
     }
 
     public sealed class Department
@@ -41,7 +41,7 @@ namespace SimplePortal.UI.Web.Data
         public string Name { get; set; }
         public List<CourseType> CourseTypes { get; set; }
 
-        public string DisplayName { get { return $"{this.ShortName} {this.Name}"; } }
+        public string DisplayName { get { return $"{this.ShortName} {this.Name}".Trim(); } }
     }
 
     public sealed class CourseType
@@ -62,13 +62,14 @@ namespace SimplePortal.UI.Web.Data
         {
             get
             {
-                return $"{this.Semester?.Year}{this.Semester?.Period} {this.Department?.ShortName}{this.ClassCode} {this.ClassName} {this.Department?.CourseTypes}".Trim();
+                return $"{this.Semester?.Year}{this.Semester?.Period} {this.Department?.ShortName}{this.ClassCode} {this.ClassName} {this.Department?.CourseTypes}".Replace("  ", "").Trim();
             }
         }
     }
 
     public enum StatusCodes
     {
+        None,
         OK,
         Error
     }

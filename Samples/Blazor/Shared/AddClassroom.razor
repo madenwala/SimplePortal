@@ -1,5 +1,5 @@
 ﻿@using SimplePortal.UI.Web.Data
-@inject ClassroomService Service
+@inject SimplePortalService Service
 
 <h3>Add Classroom</h3>
 
@@ -10,7 +10,11 @@
 }
 else
 {
-    if (response.Status != StatusCodes.OK)
+    if (okStatus == true)
+    {
+        <p class="text-info"><strong>Class added!</strong></p>
+    }
+    else if (response.Status == StatusCodes.Error)
     {
         <p class="text-danger"><strong>@response.ErrorMessage</strong></p>
     }
@@ -29,23 +33,23 @@ else
     </p>
     <p>
         <label for="classcode">Class Code</label>
-        <input type="number" id="classcode" name="classcode" @bind="this.Classroom.ClassCode" />
+        <input type="number" id="classcode" name="classcode" @bind="request.ClassCode" />
     </p>
     <p>
         <label for="classname">Class Name</label>
-        <input type="text" id="classname" name="classname" @bind="this.Classroom.ClassName" />
+        <input type="text" id="classname" name="classname" @bind="request.ClassName" />
     </p>
     <p>
         <label for="username">Username</label>
-        <input type="text" id="username" name="username" @bind="this.Classroom.Username" />
+        <input type="text" id="username" name="username" @bind="request.Username" />
     </p>
     <p>
         <label for="pwd">Password</label>
-        <input type="password" id="pwd" name="pwd" @bind="this.Classroom.Password" />
+        <input type="password" id="pwd" name="pwd" @bind="request.Password" />
     </p>
 
-    <button class="btn btn-primary" @onclick="btnAdd_Click">Add</button>
-
+    <p><button class="btn btn-primary" @onclick="btnAdd_Click">Add</button></p>
+    
     if (response.Classes?.Count > 0)
     {
         <h3>Classes</h3>
@@ -60,21 +64,25 @@ else
 
 @code {
     private ClassroomResponse response;
-
-    [Parameter]
-    public AddClassroomRequest Classroom { get; set; }
+    private AddClassroomRequest request;
+    private bool okStatus = false;
 
     protected override async Task OnInitializedAsync()
     {
-        this.Classroom = new AddClassroomRequest();
+        request = new AddClassroomRequest();
         response = await Service.GetClassroomAsync();
     }
 
     private async void btnAdd_Click()
     {
         response = null;
-        response = await Service.AddClassroomAsync(this.Classroom);
+        response = await Service.AddClassroomAsync(request);
         if (response.Status == StatusCodes.OK)
-            this.Classroom = new AddClassroomRequest();
+        {
+            okStatus = true;
+            request = new AddClassroomRequest();
+        }
+        else
+            okStatus = false;
     }
 }

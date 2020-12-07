@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace SimplePortal.UI.Web.Data
 {
-    public sealed class ClassroomService
+    public sealed class SimplePortalService
     {
         private ClassroomResponse response = new ClassroomResponse();
         
-        public ClassroomService()
+        public SimplePortalService()
         {
             response.Semesters = new List<Semester>();
             response.Semesters.Add(new Semester() { Year = DateTime.Now.Year, Period = "H1" });
@@ -32,7 +30,7 @@ namespace SimplePortal.UI.Web.Data
             return Task.FromResult<ClassroomResponse>(response);
         }
 
-        public Task<ClassroomResponse> AddClassroomAsync(AddClassroomRequest request)
+        public async Task<ClassroomResponse> AddClassroomAsync(AddClassroomRequest request)
         {
             try
             {
@@ -43,8 +41,7 @@ namespace SimplePortal.UI.Web.Data
                 }
                 else
                 {
-                    response.Status = StatusCodes.OK;
-                    response.ErrorMessage = null;
+                    response = await this.GetClassroomAsync();
                     response.Classes.Add(request.DisplayName);
                 }
             }
@@ -54,7 +51,7 @@ namespace SimplePortal.UI.Web.Data
                 response.ErrorMessage = ex.Message;
             }
 
-            return Task.FromResult<ClassroomResponse>(response);
+            return response;
         }
     }
 
