@@ -20,7 +20,7 @@ namespace SimplePortal.UI.Web.Data
         public int Year { get; set; }
         public string Period { get; set; }
 
-        public string DisplayName { get { return $"{this.Year} {this.Period}".Trim(); } }
+        public string DisplayName { get { return $"{this.Year}{this.Period}".Trim(); } }
     }
 
     public sealed class Department
@@ -33,7 +33,7 @@ namespace SimplePortal.UI.Web.Data
             {
                 this.CourseTypes = new List<CourseType>();
                 foreach (string courseName in courseNames)
-                    this.CourseTypes.Add(new CourseType() { });
+                    this.CourseTypes.Add(new CourseType() { Name = courseName });
             }
         }
 
@@ -41,19 +41,20 @@ namespace SimplePortal.UI.Web.Data
         public string Name { get; set; }
         public List<CourseType> CourseTypes { get; set; }
 
-        public string DisplayName { get { return $"{this.ShortName} {this.Name}".Trim(); } }
+        public string DisplayName { get { return $"{this.ShortName} - {this.Name}".Trim(); } }
     }
 
     public sealed class CourseType
     {
-        public long Name { get; set; }
+        public string Name { get; set; }
     }
 
     public sealed class AddClassroomRequest
     {
-        public Semester Semester { get; set; }
-        public Department Department { get; set; }
-        public string ClassCode { get; set; }
+        public string Semester { get; set; }
+        public string Department { get; set; }
+        public string CourseType { get; set; }
+        public int ClassCode { get; set; } = 100;
         public string ClassName { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -62,8 +63,15 @@ namespace SimplePortal.UI.Web.Data
         {
             get
             {
-                return $"{this.Semester?.Year}{this.Semester?.Period} {this.Department?.ShortName}{this.ClassCode} {this.ClassName} {this.Department?.CourseTypes}".Replace("  ", "").Trim();
+                return $"{this.Semester} {this.Department}{this.ClassCode} {this.ClassName} {this.CourseType}".Replace("  ", "").Trim();
             }
+        }
+
+        public bool IsInvalid()
+        {
+            return string.IsNullOrEmpty(this.Semester)
+                || string.IsNullOrEmpty(this.Department)
+                || string.IsNullOrEmpty(this.ClassName);
         }
     }
 

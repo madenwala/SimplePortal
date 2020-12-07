@@ -34,7 +34,12 @@ namespace SimplePortal.UI.Web.Data
         {
             try
             {
-                if (string.IsNullOrEmpty(request.DisplayName) || response.Classes.Contains(request.DisplayName))
+                if(request.IsInvalid())
+                {
+                    response.Status = StatusCodes.Error;
+                    response.ErrorMessage = "Incomplete form!";
+                }
+                else if (string.IsNullOrEmpty(request.DisplayName) || response.Classes.Contains(request.DisplayName))
                 {
                     response.Status = StatusCodes.Error;
                     response.ErrorMessage = "The class already exist!";
